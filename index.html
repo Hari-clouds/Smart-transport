@@ -1,0 +1,87 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+  <title>RIT Smart Transport — Route Selector</title> 
+  <link rel="stylesheet" href="style.css" /> 
+  <link rel="stylesheet" href="missedbus.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head> 
+<body> 
+
+  <div class="page-bg"> 
+    <div class="container"> 
+
+      <!-- Header --> 
+      <div class="app-header"> 
+        <div class="logo-wrap"> 
+          <svg class="bus-svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> 
+            <rect x="1" y="3" width="15" height="13" rx="2"/> 
+            <path d="M16 8h4l3 3v5h-7V8z"/> 
+            <circle cx="5.5" cy="18.5" r="2.5"/> 
+            <circle cx="18.5" cy="18.5" r="2.5"/> 
+          </svg> 
+        </div> 
+        <div class="header-text"> 
+          <h1>RIT Smart Transport</h1> 
+          <p>Rajalakshmi Institute of Technology &mdash; 51 Bus Routes</p> 
+        </div>
+
+        <!-- ★ MISSED BUS BUTTON ★ -->
+        <button class="missed-bus-trigger-btn" onclick="openMissedBusPanel()" title="Find alternate buses if you missed your route">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13" rx="2"/>
+            <path d="M16 8h4l3 3v5h-7V8z"/>
+            <circle cx="5.5" cy="18.5" r="2.5"/>
+            <circle cx="18.5" cy="18.5" r="2.5"/>
+            <line x1="22" y1="2" x2="18" y2="6" stroke="#dc2626" stroke-width="2.5"/>
+            <line x1="18" y1="2" x2="22" y2="6" stroke="#dc2626" stroke-width="2.5"/>
+          </svg>
+          Missed Bus
+        </button>
+
+        <div class="arrival-badge"> 
+          <span class="arrival-label">Campus Arrival</span> 
+          <span class="arrival-time">7:40 AM</span> 
+        </div> 
+      </div> 
+
+      <!-- Search Box --> 
+      <div class="search-section"> 
+        <label class="section-label" for="searchInput">Find Your Route</label> 
+        <div class="search-wrap"> 
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> 
+            <circle cx="11" cy="11" r="8"/> 
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/> 
+          </svg> 
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search by route number or area (e.g. R16, Velachery)..." 
+            oninput="filterRoutes()" 
+            autocomplete="off" 
+          /> 
+          <button class="clear-btn" id="clearBtn" onclick="clearSearch()" title="Clear">&#x2715;</button> 
+        </div> 
+        <div class="result-count" id="countPill">51 routes available</div> 
+      </div> 
+
+      <!-- Dropdown List --> 
+      <div class="dropdown-panel" id="dropdown"></div> 
+
+      <!-- Selected Route Card --> 
+      <div id="selectedCard"></div> 
+
+    </div> 
+  </div> 
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="routes.js"></script>
+  <script src="mapview.js"></script>
+  <script src="boarding.js"></script>
+  <script src="missedbus.js"></script>
+  <script src="app.js"></script> 
+
+</body> 
+</html>
