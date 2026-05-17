@@ -85,6 +85,10 @@
           <div class="admin-avatar">A</div>
           <span>Admin</span>
         </div>
+        <button class="admin-link-btn" onclick="clearSession()" title="Logout" style="margin-left:8px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </button>
       </div>
     </header>
 
@@ -165,6 +169,7 @@
                 <th>Starting Point</th>
                 <th>Driver</th>
                 <th>Departs</th>
+                <th>Seats</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -530,6 +535,9 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="auth.js"></script>
+  <script>checkAuth(['admin']);</script>
+  <script src="seats.js"></script>
   <script src="routes.js"></script>
   <script src="admin.js"></script>
 </body>

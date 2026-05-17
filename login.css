@@ -1,0 +1,247 @@
+/* login.css — RIT Smart Transport Login Page */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2548 0%, #1a3a6b 55%, #0f2548 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  overflow: hidden;
+  animation: loginSlideUp 0.3s ease;
+}
+
+@keyframes loginSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.login-header {
+  background: linear-gradient(135deg, #1a3a6b 0%, #0f2548 100%);
+  padding: 2rem 1.5rem 1.5rem;
+  text-align: center;
+}
+
+.login-logo {
+  background: rgba(255,255,255,0.15);
+  border-radius: 14px;
+  width: 56px; height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.login-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.login-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 4px;
+}
+
+/* Steps */
+.login-step {
+  padding: 1.8rem 1.6rem;
+  animation: stepFade 0.2s ease;
+}
+
+@keyframes stepFade {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.login-step.hidden { display: none !important; }
+
+.step-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a3a6b;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+/* Role cards */
+.role-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 1.4rem 1rem;
+  background: #f8faff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: inherit;
+}
+
+.role-card:hover {
+  border-color: #1a3a6b;
+  background: #e8f0fb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26,58,107,0.14);
+}
+
+.role-icon { font-size: 32px; line-height: 1; }
+.role-name { font-size: 14px; font-weight: 700; color: #1a3a6b; }
+.role-desc { font-size: 11px; color: #64748b; text-align: center; }
+
+/* Driver link */
+.driver-link {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+  text-decoration: none;
+  margin-top: 4px;
+  padding: 4px;
+  transition: color 0.15s;
+}
+
+.driver-link:hover { color: #1a3a6b; }
+
+/* Back button */
+.back-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 0 12px;
+  display: block;
+  font-family: inherit;
+  transition: color 0.15s;
+}
+
+.back-btn:hover { color: #1a3a6b; }
+
+/* Form */
+.login-form { margin-top: 4px; }
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1.5px solid #c3d3ea;
+  border-radius: 9px;
+  outline: none;
+  color: #1e293b;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: #fff;
+}
+
+.form-group input:focus {
+  border-color: #1a3a6b;
+  box-shadow: 0 0 0 3px rgba(26,58,107,0.1);
+}
+
+.login-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.login-error.hidden { display: none; }
+
+.login-submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #1a3a6b;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.12s;
+  margin-top: 4px;
+}
+
+.login-submit-btn:hover {
+  background: #0f2548;
+  transform: translateY(-1px);
+}
+
+/* Demo hint */
+.demo-hint {
+  margin-top: 16px;
+  background: #f8faff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.demo-hint strong {
+  color: #1a3a6b;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.demo-hint code {
+  background: #e8f0fb;
+  color: #1a3a6b;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+@media (max-width: 480px) {
+  .login-card { border-radius: 16px; }
+  .login-step { padding: 1.4rem 1.2rem; }
+}

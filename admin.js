@@ -214,12 +214,15 @@ function renderOverviewTable() {
     const b = BUS_POSITIONS[route.no] || {};
     const d = driver(route.no);
     const st = b.status || 'offline';
+    const seats = typeof getSeats === 'function' ? getSeats(route.no) : null;
+    const seatsStr = seats ? `${seats.occupied}/${seats.total}` : '<span style="color:#94a3b8">—</span>';
     return `
       <tr>
         <td><span class="badge" style="font-size:11px">${route.no}</span></td>
         <td>${route.name}</td>
         <td>${d ? d.name : '<span style="color:#94a3b8">Unassigned</span>'}</td>
         <td>${route.depart}</td>
+        <td>${seatsStr}</td>
         <td><span class="status-badge status-${st}">${statusLabel(st)}</span></td>
         <td>
           <button class="btn-icon" onclick="showSection('live-monitoring')" title="View on map">🗺️</button>
@@ -557,6 +560,7 @@ function saveDriver() {
   const route = document.getElementById('driverRoute').value;
   if (!name || !phone) { showToast('Please fill in name and phone'); return; }
   drivers.push({ id: nextDriverId++, name, phone, route, status: 'running' });
+  if (phone) localStorage.setItem('driver_assignment_' + phone, JSON.stringify({ routeNo: route, name }));
   logActivity(`👤 Driver "${name}" added${route ? ' → Route ' + route : ''}`, 'info');
   renderDriversTable();
   closeModal('addDriverModal');
@@ -581,7 +585,11 @@ function updateDriver() {
   const route = document.getElementById('editDriverRoute').value;
   if (!name || !phone) { showToast('Please fill all fields'); return; }
   const d = drivers.find(x => x.id === id);
-  if (d) { d.name = name; d.phone = phone; d.route = route; }
+  if (d) {
+    if (d.phone && d.phone !== phone) localStorage.removeItem('driver_assignment_' + d.phone);
+    d.name = name; d.phone = phone; d.route = route;
+    if (phone) localStorage.setItem('driver_assignment_' + phone, JSON.stringify({ routeNo: route, name }));
+  }
   renderDriversTable();
   closeModal('editDriverModal');
   showToast('Driver updated');
@@ -640,6 +648,10 @@ function renderRouteEditPanel() {
         <label>Departure Time</label>
         <input type="text" id="editRouteDepart" value="${r.depart}" />
       </div>
+      <div class="form-group">
+        <label>Total Seats</label>
+        <input type="number" id="editRouteSeats" min="1" max="60" value="${(typeof getSeats === 'function' && getSeats(r.no)) ? getSeats(r.no).total : 40}" />
+      </div>
       <div style="margin-bottom:8px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:8px">
           Boarding Stops (${stops.length})
@@ -672,6 +684,8 @@ function saveRouteEdit(routeNo) {
   if (!r) return;
   r.name   = document.getElementById('editRouteName').value.trim() || r.name;
   r.depart = document.getElementById('editRouteDepart').value.trim() || r.depart;
+  const seatsVal = parseInt(document.getElementById('editRouteSeats').value) || 40;
+  if (typeof initSeats === 'function') initSeats(routeNo, seatsVal);
   renderRouteMgmtList();
   renderRouteEditPanel();
   renderOverviewTable();

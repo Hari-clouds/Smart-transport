@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RIT Smart Transport — Login</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+<div class="login-bg">
+  <div class="login-card" id="loginCard">
+
+    <!-- Header -->
+    <div class="login-header">
+      <div class="login-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+          <rect x="1" y="3" width="15" height="13" rx="2"/>
+          <path d="M16 8h4l3 3v5h-7V8z"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+      </div>
+      <h1 class="login-title">RIT Smart Transport</h1>
+      <p class="login-sub">Rajalakshmi Institute of Technology</p>
+    </div>
+
+    <!-- Step 1: Role Selection -->
+    <div class="login-step" id="step1">
+      <div class="step-label">Who are you?</div>
+      <div class="role-grid">
+        <button class="role-card" onclick="selectRole('passenger')">
+          <div class="role-icon">🎓</div>
+          <div class="role-name">Passenger</div>
+          <div class="role-desc">Students &amp; Faculty</div>
+        </button>
+        <button class="role-card" onclick="selectRole('admin')">
+          <div class="role-icon">⚙️</div>
+          <div class="role-name">Admin</div>
+          <div class="role-desc">Transport Management</div>
+        </button>
+      </div>
+      <a href="driver.html" class="driver-link">Are you a driver? →</a>
+    </div>
+
+    <!-- Step 2: Passenger Type -->
+    <div class="login-step hidden" id="step2">
+      <button class="back-btn" onclick="goBack(1)">← Back</button>
+      <div class="step-label">Select your category</div>
+      <div class="role-grid">
+        <button class="role-card" onclick="selectPassengerType('student')">
+          <div class="role-icon">📚</div>
+          <div class="role-name">Student</div>
+          <div class="role-desc">Email + Register No.</div>
+        </button>
+        <button class="role-card" onclick="selectPassengerType('staff')">
+          <div class="role-icon">👨‍🏫</div>
+          <div class="role-name">Faculty / Staff</div>
+          <div class="role-desc">Staff ID + Phone</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Login Form -->
+    <div class="login-step hidden" id="step3">
+      <button class="back-btn" id="step3BackBtn" onclick="goBack(2)">← Back</button>
+      <div class="step-label" id="formTitle">Sign In</div>
+
+      <form class="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label id="usernameLabel">Username</label>
+          <input type="text" id="usernameInput" autocomplete="off" required />
+        </div>
+        <div class="form-group">
+          <label id="passwordLabel">Password</label>
+          <input type="password" id="passwordInput" required />
+        </div>
+        <div class="login-error hidden" id="loginError">Invalid credentials. Please try again.</div>
+        <button type="submit" class="login-submit-btn">Sign In →</button>
+      </form>
+
+      <!-- Demo credentials hint -->
+      <div class="demo-hint" id="demoHint"></div>
+    </div>
+
+  </div>
+</div>
+<script src="auth.js"></script>
+<script src="login.js"></script>
+</body>
+</html>

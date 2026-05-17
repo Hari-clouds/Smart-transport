@@ -135,6 +135,8 @@ function renderCard(route) {
         </div> 
       </div> 
 
+      <div id="seatAvail_${route.no}" style="margin-bottom:8px">${typeof seatAvailabilityHTML === 'function' ? seatAvailabilityHTML(route.no) : ''}</div>
+
       <div class="card-actions">
        ${route.boarding ? `
           <button class="boarding-btn" onclick="openBoardingPoints(${routeJson})">
@@ -147,6 +149,13 @@ function renderCard(route) {
           </button>
         ` : '<p style="font-size:13px;color:#f59e0b;">⚠ Boarding points not yet available for this route.</p>'}
 
+        <button class="checkin-btn" id="checkinBtn_${route.no}" onclick="openCheckIn('${route.no}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Check In (GPS)
+        </button>
+
        <button class="map-btn" id="mapTriggerBtn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
@@ -155,15 +164,33 @@ function renderCard(route) {
           </svg>
           View Route Map
         </button>
+
+        ${route.stops && route.stops.length >= 2 ? `
+        <button class="trk-btn" id="trackTriggerBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+            <line x1="12" y1="2" x2="12" y2="5"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="5" y2="12"/>
+            <line x1="19" y1="12" x2="22" y2="12"/>
+          </svg>
+          Track My Bus
+        </button>
+        ` : ''}
       </div>
 
     </div>
   `;
   const mapBtn = document.getElementById('mapTriggerBtn');
-if (mapBtn && typeof openRouteMap === 'function') {
-  mapBtn.removeEventListener('click', () => openRouteMap(route));
-  mapBtn.addEventListener('click', () => openRouteMap(route));
-}
+  if (mapBtn && typeof openRouteMap === 'function') {
+    mapBtn.addEventListener('click', () => openRouteMap(route));
+  }
+
+  const trkBtn = document.getElementById('trackTriggerBtn');
+  if (trkBtn && typeof openBusTracker === 'function') {
+    trkBtn.addEventListener('click', () => openBusTracker(route));
+  }
 }
 
 /* ==========================================
@@ -192,8 +219,61 @@ function clearSearch() {
   searchInput.focus(); 
 } 
 
-searchInput.addEventListener('keydown', e => { 
-  if (e.key === 'Escape') clearSearch(); 
-}); 
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') clearSearch();
+});
+
+/* ==========================================
+   CHECK IN (GPS ATTENDANCE)
+========================================== */
+function openCheckIn(routeNo) {
+  const sess = typeof getSession === 'function' ? getSession() : null;
+  const userId = sess ? (sess.id || sess.name) : 'guest_' + Date.now();
+
+  const seats = typeof getSeats === 'function' ? getSeats(routeNo) : null;
+  if (!seats) {
+    alert('Seat availability not configured for this route yet. Ask your admin.');
+    return;
+  }
+  if (seats.passengers && seats.passengers.includes(userId)) {
+    alert('You are already checked in for this route today.');
+    return;
+  }
+
+  const btn = document.getElementById('checkinBtn_' + routeNo);
+  if (btn) btn.disabled = true;
+
+  const progressId = 'checkinProg_' + routeNo;
+  let progEl = document.getElementById(progressId);
+  if (!progEl) {
+    progEl = document.createElement('div');
+    progEl.id = progressId;
+    progEl.className = 'checkin-progress';
+    if (btn) btn.parentNode.insertBefore(progEl, btn.nextSibling);
+  }
+  progEl.innerHTML = '<div class="checkin-countdown">Verifying GPS… stay near the bus. <span id="cdTimer_' + routeNo + '">20</span>s</div><div class="checkin-bar-bg"><div class="checkin-bar-fill" id="cdBar_' + routeNo + '" style="width:0%"></div></div>';
+
+  startAttendanceCheck(
+    routeNo,
+    userId,
+    () => {
+      progEl.innerHTML = '<div class="checkin-success">✓ Check-in successful! Seat booked.</div>';
+      const avail = document.getElementById('seatAvail_' + routeNo);
+      if (avail && typeof seatAvailabilityHTML === 'function') avail.innerHTML = seatAvailabilityHTML(routeNo);
+      if (btn) { btn.disabled = true; btn.textContent = '✓ Checked In'; }
+    },
+    (msg) => {
+      progEl.innerHTML = '<div class="checkin-fail">' + (msg || 'GPS check failed. Move closer to the bus.') + '</div>';
+      if (btn) btn.disabled = false;
+      setTimeout(() => { progEl.innerHTML = ''; }, 4000);
+    },
+    (remaining) => {
+      const timerEl = document.getElementById('cdTimer_' + routeNo);
+      const barEl   = document.getElementById('cdBar_'   + routeNo);
+      if (timerEl) timerEl.textContent = remaining;
+      if (barEl)   barEl.style.width = ((20 - remaining) / 20 * 100) + '%';
+    }
+  );
+}
 
 renderList();

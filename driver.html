@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RIT Transport — Driver Portal</title>
+  <link rel="stylesheet" href="driver.css" />
+</head>
+<body>
+
+<div class="drv-bg">
+
+  <!-- Header -->
+  <div class="drv-header">
+    <div class="drv-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">
+        <rect x="1" y="3" width="15" height="13" rx="2"/>
+        <path d="M16 8h4l3 3v5h-7V8z"/>
+        <circle cx="5.5" cy="18.5" r="2.5"/>
+        <circle cx="18.5" cy="18.5" r="2.5"/>
+      </svg>
+    </div>
+    <div>
+      <div class="drv-header-title">RIT Smart Transport</div>
+      <div class="drv-header-sub">Driver Portal</div>
+    </div>
+  </div>
+
+  <div class="drv-content">
+
+    <!-- SCREEN 1: Phone Verification -->
+    <div class="drv-screen" id="screenVerify">
+      <div class="drv-screen-icon">📱</div>
+      <h2 class="drv-screen-title">Verify Your Phone</h2>
+      <p class="drv-screen-desc">Enter your registered phone number to continue</p>
+
+      <div class="drv-form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="driverPhone" placeholder="Enter 10-digit phone number" maxlength="10" />
+      </div>
+      <button class="drv-btn drv-btn-primary" onclick="sendOTP()">Send OTP →</button>
+
+      <div id="otpSection" style="display:none">
+        <div class="drv-otp-sent" id="otpSentMsg"></div>
+        <div class="drv-form-group" style="margin-top:16px">
+          <label>Enter OTP</label>
+          <input type="text" id="otpInput" placeholder="4-digit OTP" maxlength="4" />
+        </div>
+        <button class="drv-btn drv-btn-primary" onclick="verifyOTP()">Verify OTP ✓</button>
+      </div>
+
+      <div class="drv-error hidden" id="verifyError"></div>
+    </div>
+
+    <!-- SCREEN 2: Trip Control -->
+    <div class="drv-screen hidden" id="screenTrip">
+      <div class="drv-driver-info" id="driverInfoCard"></div>
+
+      <div class="drv-route-card" id="driverRouteCard">
+        <div class="drv-route-label">Assigned Route</div>
+        <div class="drv-route-no" id="driverRouteNo">—</div>
+        <div class="drv-route-name" id="driverRouteName">—</div>
+        <div class="drv-route-depart" id="driverRouteDepart">—</div>
+      </div>
+
+      <div class="drv-seats-info" id="driverSeatsInfo"></div>
+
+      <div class="drv-gps-status" id="driverGpsStatus">
+        <span class="drv-gps-dot" id="gpsDot"></span>
+        <span id="gpsStatusText">GPS: Inactive</span>
+      </div>
+
+      <div id="tripNotStarted">
+        <button class="drv-btn drv-btn-start" onclick="startTrip()">
+          🚌 START TRIP
+        </button>
+      </div>
+
+      <div id="tripInProgress" style="display:none">
+        <div class="drv-trip-active">
+          <div class="drv-trip-active-dot"></div>
+          <span>Trip in Progress — GPS Active</span>
+        </div>
+        <button class="drv-btn drv-btn-end" onclick="endTrip()">
+          🏁 END TRIP
+        </button>
+      </div>
+
+      <button class="drv-logout-btn" onclick="driverLogout()">Logout</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="driver.js"></script>
+</body>
+</html>

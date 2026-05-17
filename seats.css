@@ -1,0 +1,116 @@
+/* seats.css — Seat Availability Styles */
+
+/* Inline bar */
+.seat-avail-wrap {
+  margin: 8px 0 0;
+}
+
+.seat-avail-bar-bg {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.seat-avail-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+
+.seat-avail-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.seat-na {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* Check-in button */
+.checkin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #16a34a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.12s;
+  margin-top: 6px;
+}
+
+.checkin-btn:hover { background: #15803d; transform: translateY(-1px); }
+.checkin-btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+
+/* Check-in progress box */
+.checkin-progress {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.checkin-progress-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #15803d;
+  margin-bottom: 10px;
+}
+
+.checkin-countdown {
+  font-size: 28px;
+  font-weight: 900;
+  color: #16a34a;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.checkin-bar-wrap {
+  height: 8px;
+  background: #dcfce7;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.checkin-bar-fill {
+  height: 100%;
+  background: #16a34a;
+  border-radius: 10px;
+  transition: width 1s linear;
+}
+
+.checkin-success {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #15803d;
+}
+
+.checkin-fail {
+  background: #fee2e2;
+  border: 1.5px solid #fca5a5;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #b91c1c;
+  text-align: center;
+}
