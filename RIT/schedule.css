@@ -1,0 +1,369 @@
+/* ============================================================
+   schedule.css — RIT Smart Transport Bus Schedule Page
+   ============================================================ */
+
+/* Layout */
+.sch-container {
+  max-width: 1100px;
+}
+
+/* Controls bar */
+.sch-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.sch-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.sch-search-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.sch-search-wrap input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #fff;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.sch-search-wrap input:focus {
+  border-color: #1a3a6b;
+}
+
+/* Sort group */
+.sch-sort-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.sch-sort-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sch-sort-btn {
+  padding: 7px 13px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.sch-sort-btn:hover {
+  border-color: #1a3a6b;
+  color: #1a3a6b;
+}
+
+.sch-sort-btn.active {
+  background: #1a3a6b;
+  border-color: #1a3a6b;
+  color: #fff;
+}
+
+/* Print button */
+.sch-print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #f0f4fa;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.sch-print-btn:hover {
+  background: #e2e8f0;
+  color: #1a3a6b;
+}
+
+/* Result bar */
+.sch-result-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 10px;
+  padding: 0 2px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#schCount {
+  font-weight: 700;
+  color: #1a3a6b;
+}
+
+.sch-campus-note {
+  font-size: 12px;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* Table wrapper */
+.sch-table-wrap {
+  background: #fff;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+/* Table */
+.sch-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+
+.sch-table thead th {
+  background: #1a3a6b;
+  color: rgba(255,255,255,0.85);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 12px 14px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.sch-table thead th.col-no,
+.sch-table thead th.col-dur,
+.sch-table thead th.col-stops,
+.sch-table thead th.col-action {
+  text-align: center;
+}
+
+.sch-table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.12s;
+}
+
+.sch-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.sch-table tbody tr:hover {
+  background: #f8faff;
+}
+
+.sch-table tbody td {
+  padding: 11px 14px;
+  font-size: 13.5px;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.sch-table tbody td.col-no,
+.sch-table tbody td.col-dur,
+.sch-table tbody td.col-stops,
+.sch-table tbody td.col-action {
+  text-align: center;
+}
+
+/* Route badge */
+.sch-badge {
+  display: inline-block;
+  background: #1a3a6b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+
+.sch-badge-pending {
+  background: #94a3b8;
+}
+
+.sch-row-pending td {
+  color: #94a3b8;
+}
+
+.sch-pending-tag {
+  font-size: 10px;
+  color: #94a3b8;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* Time values */
+.sch-time {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.sch-depart {
+  color: #1a3a6b;
+}
+
+.sch-arrive {
+  color: #16a34a;
+}
+
+.sch-dur {
+  color: #7c3aed;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* Action button */
+.sch-action-btn {
+  display: inline-block;
+  padding: 5px 14px;
+  background: #f0f4fa;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 7px;
+  color: #1a3a6b;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.sch-action-btn:hover {
+  background: #1a3a6b;
+  border-color: #1a3a6b;
+  color: #fff;
+}
+
+/* Empty state */
+.sch-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: #94a3b8;
+  font-size: 15px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+}
+
+/* Summary cards */
+.sch-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.sch-card {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: box-shadow 0.15s;
+}
+
+.sch-card:hover {
+  box-shadow: 0 4px 16px rgba(26,58,107,0.1);
+}
+
+.sch-card-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.sch-card-body {
+  min-width: 0;
+}
+
+.sch-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+  margin-bottom: 3px;
+}
+
+.sch-card-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1a3a6b;
+  line-height: 1.1;
+  margin-bottom: 3px;
+}
+
+.sch-card-sub {
+  font-size: 12px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .sch-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sch-sort-group {
+    justify-content: flex-start;
+  }
+
+  .sch-result-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Print */
+@media print {
+  .print-hide  { display: none !important; }
+  .sch-controls { display: none !important; }
+  .app-header   { background: #1a3a6b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sch-table-wrap { box-shadow: none; border: 1px solid #ccc; }
+  .sch-table thead th { background: #1a3a6b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sch-cards    { display: none; }
+  .page-bg      { background: #fff !important; }
+  body          { font-size: 12px; }
+}
