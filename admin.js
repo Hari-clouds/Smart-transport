@@ -468,12 +468,18 @@ function sendNotification() {
 
 function pushNotification(type, routeNo, msg) {
   const route = ROUTES.find(r => r.no === routeNo);
+  const timeStr = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
   notifications.unshift({
     type,
     target: routeNo === 'all' ? 'All Routes' : `${routeNo}${route ? ' — ' + route.name : ''}`,
     msg,
-    time: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }),
+    time: timeStr,
   });
+  /* Persist to localStorage so passenger and parent pages can read it */
+  const stored = JSON.parse(localStorage.getItem('rit_notifications') || '[]');
+  stored.unshift({ id: Date.now(), type, routeNo, message: msg, timeStr, timestamp: Date.now() });
+  if (stored.length > 50) stored.length = 50;
+  localStorage.setItem('rit_notifications', JSON.stringify(stored));
   renderNotifFeed();
 }
 

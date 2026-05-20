@@ -1,0 +1,316 @@
+/* =========================
+   RIT Smart Transport — parent.css
+   Parent Portal Styles
+========================= */
+
+/* ---- Container ---- */
+.par-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ---- Child Info Card ---- */
+.par-child-card {
+  background: linear-gradient(135deg, #1a3a6b 0%, #0f2347 100%);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(26, 58, 107, 0.22);
+}
+
+.par-child-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.par-child-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.par-child-reg {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.par-pill-boarded {
+  display: inline-block;
+  background: #16a34a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.par-pill-pending {
+  display: inline-block;
+  background: #f59e0b;
+  color: #1a1a1a;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ---- Section Cards ---- */
+.par-section {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(26, 58, 107, 0.07);
+}
+
+.par-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #64748b;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---- Notification Badge ---- */
+.par-notif-badge {
+  display: inline-block;
+  background: #f59e0b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  min-width: 22px;
+  text-align: center;
+}
+
+/* ---- Boarding Status ---- */
+.par-boarding-status {
+  /* wrapper; children fill it */
+}
+
+.par-status-boarded {
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  border: 1.5px solid #bbf7d0;
+  line-height: 1.6;
+}
+
+.par-status-not-boarded {
+  background: #fef9c3;
+  color: #92400e;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  border: 1.5px solid #fde68a;
+  line-height: 1.6;
+}
+
+/* ---- Boarding Pass ---- */
+.par-pass-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.par-pass-inner {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-left: 8px solid #1a3a6b;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(26, 58, 107, 0.08);
+  position: relative;
+}
+
+/* Diagonal watermark */
+.par-pass-inner::after {
+  content: 'BOARDED';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 52px;
+  font-weight: 900;
+  color: rgba(22, 163, 74, 0.08);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.par-pass-left {
+  flex: 1;
+  padding: 20px 18px;
+}
+
+.par-pass-divider {
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #e2e8f0 0px,
+    #e2e8f0 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  flex-shrink: 0;
+  margin: 12px 0;
+}
+
+.par-pass-right {
+  flex: 0 0 160px;
+  padding: 20px 18px;
+  background: #f8fafd;
+  display: flex;
+  flex-direction: column;
+}
+
+.par-pass-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #94a3b8;
+}
+
+.par-pass-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 2px;
+}
+
+.par-pass-badge {
+  display: inline-block;
+  background: #1a3a6b;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 5px 14px;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.par-pass-confirmed {
+  margin-top: auto;
+  padding-top: 16px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #16a34a;
+}
+
+/* ---- Notifications ---- */
+.par-notif-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.par-notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #f8fafd;
+  border-radius: 8px;
+  border: 1px solid #e8edf5;
+}
+
+.par-notif-type {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.par-notif-delay {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.par-notif-arrival {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.par-notif-info {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.par-notif-msg {
+  flex: 1;
+  font-size: 13px;
+  color: #1e293b;
+  line-height: 1.45;
+}
+
+.par-notif-time {
+  font-size: 11px;
+  color: #94a3b8;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.par-notif-empty {
+  text-align: center;
+  font-size: 13px;
+  color: #94a3b8;
+  padding: 16px 0;
+}
+
+/* ---- Map Status ---- */
+.par-map-status {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 520px) {
+  .par-pass-inner {
+    flex-direction: column;
+  }
+
+  .par-pass-divider {
+    width: auto;
+    height: 1px;
+    background: repeating-linear-gradient(
+      to right,
+      #e2e8f0 0px,
+      #e2e8f0 6px,
+      transparent 6px,
+      transparent 12px
+    );
+    margin: 0 12px;
+  }
+
+  .par-pass-right {
+    flex: unset;
+    background: #f8fafd;
+  }
+}

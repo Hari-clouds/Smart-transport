@@ -1,0 +1,163 @@
+/* Boarding Pass Modal */
+.bp-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10,20,40,0.72);
+  display: flex; align-items: center; justify-content: center;
+  animation: bpFadeIn 0.25s ease;
+}
+@keyframes bpFadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes bpSlideUp { from { opacity:0;transform:translateY(24px) } to { opacity:1;transform:none } }
+
+.bp-modal {
+  background: #fff;
+  border-radius: 20px;
+  max-width: 480px; width: 94%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  overflow: hidden;
+  animation: bpSlideUp 0.3s ease;
+}
+
+.bp-modal-header {
+  background: linear-gradient(135deg, #1a3a6b, #0f2548);
+  color: #fff;
+  padding: 18px 24px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.bp-modal-title { font-size: 16px; font-weight: 700; }
+.bp-modal-close {
+  background: rgba(255,255,255,0.12); border: none; color: #fff;
+  width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+}
+
+/* The pass itself */
+.bp-pass {
+  display: flex;
+  min-height: 200px;
+}
+
+.bp-pass-left {
+  background: linear-gradient(160deg, #1a3a6b 0%, #0f2548 100%);
+  color: #fff;
+  padding: 24px 20px;
+  width: 55%;
+  position: relative;
+}
+
+.bp-pass-airline {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  margin-bottom: 16px;
+}
+
+.bp-pass-name { font-size: 20px; font-weight: 800; line-height: 1.15; margin-bottom: 4px; }
+.bp-pass-regno { font-size: 12px; color: rgba(255,255,255,0.65); margin-bottom: 18px; }
+.bp-pass-row { margin-bottom: 10px; }
+.bp-pass-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.bp-pass-val { font-size: 14px; font-weight: 600; }
+
+/* Tear line */
+.bp-tear-line {
+  width: 1px;
+  background: repeating-linear-gradient(to bottom, #e2e8f0 0, #e2e8f0 6px, transparent 6px, transparent 12px);
+  flex-shrink: 0;
+  position: relative;
+}
+.bp-tear-line::before, .bp-tear-line::after {
+  content: '';
+  position: absolute; left: 50%; transform: translateX(-50%);
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #f0f4fa;
+}
+.bp-tear-line::before { top: -9px; }
+.bp-tear-line::after  { bottom: -9px; }
+
+.bp-pass-right {
+  flex: 1;
+  padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.bp-route-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff; font-size: 22px; font-weight: 900;
+  padding: 10px 18px; border-radius: 12px;
+  text-align: center; letter-spacing: 0.04em;
+}
+
+.bp-pass-right-row { }
+.bp-pass-right-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; }
+.bp-pass-right-val { font-size: 14px; font-weight: 600; color: #1a3a6b; }
+
+.bp-confirmed-stamp {
+  margin-top: auto;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #16a34a; border: 2px solid #16a34a;
+  padding: 4px 10px; border-radius: 6px;
+  display: inline-block; transform: rotate(-3deg);
+}
+
+/* Footer */
+.bp-modal-footer {
+  padding: 16px 24px;
+  background: #f8faff;
+  text-align: center;
+  font-size: 12px; color: #64748b;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Notification Bell in header */
+.notif-bell-btn {
+  position: relative;
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.22);
+  color: #fff; font-size: 18px;
+  width: 36px; height: 36px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  margin-left: 6px; transition: background 0.15s;
+}
+.notif-bell-btn:hover { background: rgba(255,255,255,0.22); }
+.notif-bell-count {
+  position: absolute; top: -4px; right: -4px;
+  background: #ef4444; color: #fff;
+  font-size: 10px; font-weight: 700;
+  min-width: 16px; height: 16px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 3px;
+}
+
+/* Notification Dropdown Panel */
+.notif-dropdown {
+  position: fixed; top: 68px; right: 16px;
+  width: 320px; max-height: 400px;
+  background: #fff; border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  z-index: 9000; overflow: hidden;
+  animation: bpSlideUp 0.2s ease;
+}
+.notif-dropdown-header {
+  padding: 14px 16px 10px;
+  font-size: 13px; font-weight: 700; color: #1a3a6b;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.notif-dropdown-close { background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 18px; }
+.notif-dropdown-body { overflow-y: auto; max-height: 340px; }
+.notif-row {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.notif-row:last-child { border-bottom: none; }
+.notif-row-type {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+}
+.notif-row-type.delay   { background: #fee2e2; color: #b91c1c; }
+.notif-row-type.arrival { background: #dcfce7; color: #15803d; }
+.notif-row-type.info    { background: #dbeafe; color: #1d4ed8; }
+.notif-row-msg  { font-size: 12px; color: #334155; flex: 1; }
+.notif-row-time { font-size: 11px; color: #94a3b8; white-space: nowrap; flex-shrink: 0; }
+.notif-empty-msg { padding: 24px; text-align: center; color: #94a3b8; font-size: 13px; }

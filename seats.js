@@ -18,7 +18,7 @@ function getSeats(routeNo) {
   return raw ? JSON.parse(raw) : null;
 }
 
-function bookSeat(routeNo, userId) {
+function bookSeat(routeNo, userId, boardingInfo) {
   const seats = getSeats(routeNo);
   if (!seats) return { success: false, msg: 'Seat data not configured for this route.' };
   if (seats.passengers.includes(userId)) return { success: false, msg: 'You have already checked in for this route.' };
@@ -26,6 +26,19 @@ function bookSeat(routeNo, userId) {
   seats.occupied++;
   seats.passengers.push(userId);
   localStorage.setItem(SEATS_KEY(routeNo), JSON.stringify(seats));
+  /* Store boarding pass so parents can check child's boarding status */
+  if (boardingInfo && boardingInfo.regNo) {
+    const now = new Date();
+    const bp = {
+      ...boardingInfo,
+      routeNo,
+      boardedAt: now.getTime(),
+      boardedAtTime: now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }),
+      boardedAtDate: now.toLocaleDateString('en-IN'),
+      status: 'boarded'
+    };
+    localStorage.setItem('rit_boarding_' + boardingInfo.regNo, JSON.stringify(bp));
+  }
   return { success: true, available: seats.total - seats.occupied };
 }
 
@@ -66,52 +79,53 @@ function haversineM(lat1, lng1, lat2, lng2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
-/* GPS Attendance Check */
+/* GPS Attendance Check — driver GPS optional */
 let attendanceTimer = null;
 let attendanceSeconds = 0;
 
-function startAttendanceCheck(routeNo, userId, onSuccess, onFail, onProgress) {
-  if (!navigator.geolocation) { onFail('GPS not supported on this device.'); return; }
-
-  const busGps = JSON.parse(localStorage.getItem('bus_gps_' + routeNo) || 'null');
-  if (!busGps) { onFail('Bus GPS not active. The driver has not started the trip yet.'); return; }
-
-  const gpsAge = Date.now() - busGps.timestamp;
-  if (gpsAge > 60000) { onFail('Bus GPS signal is outdated. Please try again when the bus is nearby.'); return; }
-
-  navigator.geolocation.getCurrentPosition(pos => {
-    const dist = haversineM(pos.coords.latitude, pos.coords.longitude, busGps.lat, busGps.lng);
-    if (dist > 20) {
-      onFail(`You are ${Math.round(dist)}m from the bus. Move within 20 metres to check in.`);
-      return;
-    }
-
-    /* Within range — start 20 second countdown */
+function startAttendanceCheck(routeNo, userId, boardingInfo, onSuccess, onFail, onProgress) {
+  /* Prototype mode: accept any location, no proximity check */
+  const doBook = () => {
     attendanceSeconds = 0;
-    onProgress(0, 20);
+    onProgress(3);
     clearInterval(attendanceTimer);
     attendanceTimer = setInterval(() => {
       attendanceSeconds++;
-      /* Re-verify position every tick */
-      navigator.geolocation.getCurrentPosition(pos2 => {
-        const d2 = haversineM(pos2.coords.latitude, pos2.coords.longitude, busGps.lat, busGps.lng);
-        if (d2 > 20) {
-          clearInterval(attendanceTimer);
-          onFail(`You moved away from the bus (${Math.round(d2)}m). Please try again.`);
-          return;
+      onProgress(3 - attendanceSeconds);
+      if (attendanceSeconds >= 3) {
+        clearInterval(attendanceTimer);
+        const result = bookSeat(routeNo, userId, boardingInfo);
+        if (result.success) {
+          if (result.available === 0) _notifyBusFull(routeNo, boardingInfo.routeName);
+          onSuccess(result.available);
+        } else {
+          onFail(result.msg);
         }
-        onProgress(attendanceSeconds, 20);
-        if (attendanceSeconds >= 20) {
-          clearInterval(attendanceTimer);
-          const result = bookSeat(routeNo, userId);
-          if (result.success) onSuccess(result.available);
-          else onFail(result.msg);
-        }
-      }, () => {}, { enableHighAccuracy: true, timeout: 3000 });
+      }
     }, 1000);
-  }, err => {
-    onFail('Could not get your location: ' + err.message);
-  }, { enableHighAccuracy: true, timeout: 10000 });
+  };
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      () => doBook(),
+      () => doBook(), /* proceed even if location denied */
+      { timeout: 3000 }
+    );
+  } else {
+    doBook();
+  }
+}
+
+function _notifyBusFull(routeNo, routeName) {
+  const stored = JSON.parse(localStorage.getItem('rit_notifications') || '[]');
+  const timeStr = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  stored.unshift({
+    id: Date.now(), type: 'info', routeNo,
+    message: `Bus ${routeNo} (${routeName || routeNo}) — All seats are now filled.`,
+    timeStr, timestamp: Date.now()
+  });
+  if (stored.length > 50) stored.length = 50;
+  localStorage.setItem('rit_notifications', JSON.stringify(stored));
 }
 
 function cancelAttendanceCheck() {

@@ -89,6 +89,10 @@ body {
   margin-bottom: 1rem;
 }
 
+.role-card-wide {
+  grid-column: span 2;
+}
+
 .role-card {
   display: flex;
   flex-direction: column;

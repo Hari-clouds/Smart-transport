@@ -29,16 +29,29 @@ function renderList() {
     return; 
   } 
 
-  dropdown.innerHTML = filteredRoutes.map(route => ` 
-    <div 
-      class="route-item${selectedRoute && selectedRoute.no === route.no ? ' active' : ''}${route.pending ? ' pending-route' : ''}" 
-      data-route="${route.no}" 
-    > 
-      <span class="badge">${route.no}</span> 
-      <span class="route-name">${route.name}${route.pending ? ' <em style="font-size:11px;color:#94a3b8">(pending)</em>' : ''}</span> 
-      <span class="route-time">${route.depart}</span> 
-    </div> 
-  `).join(''); 
+  dropdown.innerHTML = filteredRoutes.map(route => {
+    const seats = typeof getSeats === 'function' ? getSeats(route.no) : null;
+    let seatPill = '';
+    if (seats) {
+      const avail = seats.total - seats.occupied;
+      if (avail === 0) {
+        seatPill = '<span style="font-size:10px;font-weight:700;background:#fee2e2;color:#b91c1c;padding:2px 7px;border-radius:20px;margin-left:6px;">Seats Full</span>';
+      } else {
+        const color = avail < seats.total * 0.2 ? '#f59e0b' : '#16a34a';
+        seatPill = `<span style="font-size:10px;font-weight:700;background:#f0fdf4;color:${color};padding:2px 7px;border-radius:20px;margin-left:6px;">${avail} seats</span>`;
+      }
+    }
+    return `
+    <div
+      class="route-item${selectedRoute && selectedRoute.no === route.no ? ' active' : ''}${route.pending ? ' pending-route' : ''}"
+      data-route="${route.no}"
+    >
+      <span class="badge">${route.no}</span>
+      <span class="route-name">${route.name}${route.pending ? ' <em style="font-size:11px;color:#94a3b8">(pending)</em>' : ''}${seatPill}</span>
+      <span class="route-time">${route.depart}</span>
+    </div>
+  `;
+  }).join(''); 
 
   dropdown.querySelectorAll('.route-item').forEach(item => { 
     item.addEventListener('click', () => selectRoute(item.dataset.route)); 
@@ -229,13 +242,20 @@ searchInput.addEventListener('keydown', e => {
 function openCheckIn(routeNo) {
   const sess = typeof getSession === 'function' ? getSession() : null;
   const userId = sess ? (sess.id || sess.name) : 'guest_' + Date.now();
+  const route = ROUTES.find(r => r.no === routeNo);
+  const boardingInfo = {
+    name: sess ? sess.name : 'Passenger',
+    regNo: sess ? (sess.regNo || sess.id || '') : '',
+    routeName: route ? route.name : routeNo
+  };
+
+  /* Auto-initialize with 50 seats if admin hasn't configured yet */
+  if (typeof getSeats === 'function' && !getSeats(routeNo)) {
+    if (typeof initSeats === 'function') initSeats(routeNo, 50);
+  }
 
   const seats = typeof getSeats === 'function' ? getSeats(routeNo) : null;
-  if (!seats) {
-    alert('Seat availability not configured for this route yet. Ask your admin.');
-    return;
-  }
-  if (seats.passengers && seats.passengers.includes(userId)) {
+  if (seats && seats.passengers && seats.passengers.includes(userId)) {
     alert('You are already checked in for this route today.');
     return;
   }
@@ -251,16 +271,21 @@ function openCheckIn(routeNo) {
     progEl.className = 'checkin-progress';
     if (btn) btn.parentNode.insertBefore(progEl, btn.nextSibling);
   }
-  progEl.innerHTML = '<div class="checkin-countdown">Verifying GPS… stay near the bus. <span id="cdTimer_' + routeNo + '">20</span>s</div><div class="checkin-bar-bg"><div class="checkin-bar-fill" id="cdBar_' + routeNo + '" style="width:0%"></div></div>';
+  progEl.innerHTML = '<div class="checkin-countdown">Confirming boarding… <span id="cdTimer_' + routeNo + '">3</span>s</div><div class="checkin-bar-bg"><div class="checkin-bar-fill" id="cdBar_' + routeNo + '" style="width:0%"></div></div>';
 
   startAttendanceCheck(
     routeNo,
     userId,
+    boardingInfo,
     () => {
       progEl.innerHTML = '<div class="checkin-success">✓ Check-in successful! Seat booked.</div>';
       const avail = document.getElementById('seatAvail_' + routeNo);
       if (avail && typeof seatAvailabilityHTML === 'function') avail.innerHTML = seatAvailabilityHTML(routeNo);
       if (btn) { btn.disabled = true; btn.textContent = '✓ Checked In'; }
+      if (typeof showBoardingPass === 'function' && boardingInfo.regNo) {
+        const bp = JSON.parse(localStorage.getItem('rit_boarding_' + boardingInfo.regNo) || 'null');
+        if (bp) showBoardingPass(bp);
+      }
     },
     (msg) => {
       progEl.innerHTML = '<div class="checkin-fail">' + (msg || 'GPS check failed. Move closer to the bus.') + '</div>';
@@ -271,7 +296,7 @@ function openCheckIn(routeNo) {
       const timerEl = document.getElementById('cdTimer_' + routeNo);
       const barEl   = document.getElementById('cdBar_'   + routeNo);
       if (timerEl) timerEl.textContent = remaining;
-      if (barEl)   barEl.style.width = ((20 - remaining) / 20 * 100) + '%';
+      if (barEl)   barEl.style.width = ((3 - remaining) / 3 * 100) + '%';
     }
   );
 }

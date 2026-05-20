@@ -29,6 +29,20 @@ function selectRole(role) {
       <strong>Demo Credentials</strong>
       Username: <code>admin</code> &nbsp; Password: <code>RIT@admin123</code>
     `;
+  } else if (role === 'parent') {
+    showStep(3);
+    document.getElementById('step3BackBtn').onclick = () => goBack(1);
+    document.getElementById('formTitle').textContent = 'Parent Sign In';
+    document.getElementById('usernameLabel').textContent = "Child's Register Number";
+    document.getElementById('passwordLabel').textContent = "Your Mobile Number";
+    document.getElementById('usernameInput').type = 'text';
+    document.getElementById('usernameInput').placeholder = 'e.g. 211001';
+    document.getElementById('passwordInput').placeholder = '10-digit mobile number';
+    document.getElementById('demoHint').innerHTML = `
+      <strong>Demo Credentials</strong>
+      Register No: <code>211001</code><br>
+      Parent Mobile: <code>9900000001</code>
+    `;
   } else {
     showStep(2);
   }
@@ -78,6 +92,9 @@ function handleLogin(e) {
   if (currentRole === 'admin') {
     success = loginAdmin(username, password);
     if (success) { window.location.href = 'admin.html'; return; }
+  } else if (currentRole === 'parent') {
+    const session = loginParent(username, password);
+    if (session) { window.location.href = 'parent.html'; return; }
   } else if (currentPassengerType === 'student') {
     const session = loginStudent(username, password);
     if (session) { window.location.href = 'index.html'; return; }
